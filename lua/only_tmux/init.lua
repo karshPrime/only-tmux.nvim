@@ -25,33 +25,13 @@ function M.tmuxCloseAll()
     end
 end
 
-
 -- move all other tmux panes to a new window
 function M.tmuxMoveOthers()
     if os.getenv("TMUX") then
         local new_window = user_config.new_window_name
-
-        vim.cmd('silent !tmux new-window -d -n ' .. new_window)
-
-        -- move other panes to the new window
-        local pane_list = vim.fn.systemlist(
-            "tmux list-panes -F '#{pane_id} #{?pane_active,yes,no}'"
-        )
-
-        local new_window_index = vim.fn.trim(
-            vim.fn.system('tmux display-message -p "#I"')
-        )
-
-        for _, pane in ipairs(pane_list) do
-            if not string.find(pane, "yes") then
-                local pane_id = string.match(pane, "(%S+)")
-
-                -- move the pane to the new window
-                vim.cmd(
-                    'silent !tmux join-pane -s ' .. pane_id .. ' -t ' .. new_window_index
-                )
-            end
-        end
+        local current_session = vim.fn.system("tmux display-message -p \"#I\"")
+        vim.cmd("silent !tmux break-pane")
+        vim.cmd("silent !tmux swap-window -d -t " .. current_session)
     end
 end
 
