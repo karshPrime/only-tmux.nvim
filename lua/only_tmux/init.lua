@@ -29,10 +29,12 @@ end
 function M.tmuxMoveOthers()
     if os.getenv("TMUX") then
         local new_window = user_config.new_window_name
-        local window_num = vim.fn.system("tmux display -p \"#I\"")
+        local window_num = vim.fn.system("tmux display-message -p \"#I\"")
+        window_num = string.gsub(window_num, "\n", "")
+
         vim.cmd("silent !tmux breakp")
-        vim.cmd("silent !tmux renamew -t ".. window_num .. " " .. new_window)
-        vim.cmd("silent !tmux swapw -d -t " .. window_num)
+        vim.cmd("silent !tmux renamew -t " .. window_num .. " " .. new_window)
+        vim.cmd("silent !tmux swapw -d -s " .. window_num .. " -t " .. new_window)
 
         vim.cmd("silent only")
     end
