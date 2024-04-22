@@ -34,7 +34,7 @@ function M.tmuxMoveOthers()
 
         vim.cmd("silent !tmux breakp")
         vim.cmd("silent !tmux renamew -t " .. window_num .. " " .. new_window)
-        vim.cmd("silent !tmux swapw -d -s " .. window_num .. " -t " .. new_window)
+        vim.cmd("silent !tmux swapw -d -t " .. window_num)
 
         vim.cmd("silent only")
     end
