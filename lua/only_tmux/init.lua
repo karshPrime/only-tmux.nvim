@@ -19,9 +19,9 @@ end
 function M.tmuxCloseAll()
     if os.getenv("TMUX") then
         vim.cmd('silent !tmux kill-pane -a')
-        vim.cmd('only')
+        vim.cmd('silent only')
     else
-        vim.cmd('only')
+        vim.cmd('silent only')
     end
 end
 
