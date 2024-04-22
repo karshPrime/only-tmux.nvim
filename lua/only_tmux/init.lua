@@ -18,7 +18,7 @@ end
 -- close all other tmux panes except the current one
 function M.tmuxCloseAll()
     if os.getenv("TMUX") then
-        vim.cmd('silent !tmux kill-pane -a')
+        vim.cmd('silent !tmux killp -a')
         vim.cmd('silent only')
     else
         vim.cmd('silent only')
@@ -29,9 +29,12 @@ end
 function M.tmuxMoveOthers()
     if os.getenv("TMUX") then
         local new_window = user_config.new_window_name
-        local current_session = vim.fn.system("tmux display-message -p \"#I\"")
-        vim.cmd("silent !tmux break-pane")
-        vim.cmd("silent !tmux swap-window -d -t " .. current_session)
+        local window_num = vim.fn.system("tmux display -p \"#I\"")
+        vim.cmd("silent !tmux breakp")
+        vim.cmd("silent !tmux renamew -t ".. window_num .. " " .. new_window)
+        vim.cmd("silent !tmux swapw -d -t " .. window_num)
+
+        vim.cmd("silent only")
     end
 end
 
