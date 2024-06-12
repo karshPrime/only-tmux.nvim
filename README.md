@@ -13,28 +13,22 @@ different keys for different actions).
 
 
 ## Installation and Setup
-Install the plugin using your preferred package manager. For example, with
-`Packer`, just add...
-```vim
-use 'karshPrime/only-tmux.nvim'
+Install using your favorite plugin manager. For example, using
+[lazy.nvim](https://github.com/folke/lazy.nvim):
+```lua
+{  'karshPrime/only-tmux.nvim',
+    event = 'VeryLazy',
+    config = { new_window_name = "session" }
+},
 ```
 
-and setup with
-```vim
-require('only_tmux').setup({
-    new_window_name = "session"
-})
+## Keybinds
 
+```vim
 -- move nvim panes to buffer and close unfocused tmux panes
-vim.api.nvim_set_keymap('n', '<leader>o',
-    ':lua require("only_tmux").tmuxCloseAll()<CR>', 
-    { noremap = true, silent = true }
-)
+vim.keymap.set('n', '<leader>o', ':TMUXonly close<CR>', { silent = true })
 
 -- move nvim panes to buffer and move unfocused tmux panes to new window
-vim.api.nvim_set_keymap('n', '<leader>O', 
-    ':lua require("only_tmux").tmuxMoveOthers()<CR>', 
-    { noremap = true, silent = true }
-)
+vim.keymap.set('n', '<leader>O', ':TMUXonly move<CR>', { silent = true })
 ```
 

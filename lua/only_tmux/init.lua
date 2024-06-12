@@ -1,3 +1,8 @@
+-- only-tmux.nvim
+-- Plugin to take TMUX panes into account with :only like functionality
+
+--# INITIALISE #----------------------------------------------------------------
+
 local M = {}
 
 local default_config = {
@@ -5,6 +10,9 @@ local default_config = {
 }
 
 local user_config = {}
+
+
+--# HELPER FUNCTIONS #----------------------------------------------------------
 
 -- up user configuration
 function M.setup(config)
@@ -14,6 +22,9 @@ function M.setup(config)
         config or {}
     )
 end
+
+
+--# CALL FUNCTIONS #------------------------------------------------------------
 
 -- close all other tmux panes except the current one
 function M.tmuxCloseAll()
@@ -39,6 +50,30 @@ function M.tmuxMoveOthers()
         vim.cmd("silent only")
     end
 end
+
+
+--# NVIM DISPATCH #-------------------------------------------------------------
+
+-- call the appropriate function based on the option
+function M.dispatch(option)
+    if option == "move" then
+        M.tmuxMoveOthers()
+    elseif option == "close" then
+        M.tmuxCloseAll()
+    else
+        print("Invalid option. Please use one of: move, close")
+    end
+end
+
+-- invoke the dispatch function
+vim.api.nvim_create_user_command('TMUXonly', function(args)
+    M.dispatch(args.args)
+end, {
+    nargs = 1,
+    complete = function(arglead, cmdline, cursorpos)
+        return { "move", "close" }
+    end,
+})
 
 return M
 
