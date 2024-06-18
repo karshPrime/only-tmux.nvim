@@ -11,6 +11,7 @@ With a keybind you'll minimise all unfocused nvim panes to buffer and either
 move all other tmux panes to new window or simply delete them (or just config
 different keys for different actions).
 
+![preview](.media/screenshot.gif)
 
 ## Installation and Setup
 Install using your favorite plugin manager. For example, using
@@ -18,13 +19,13 @@ Install using your favorite plugin manager. For example, using
 ```lua
 {  'karshPrime/only-tmux.nvim',
     event = 'VeryLazy',
-    config = { new_window_name = "session" }
+    config = { new_window_name = "session" } -- optional
 },
 ```
 
 ## Keybinds
 
-```vim
+```lua
 -- move nvim panes to buffer and close unfocused tmux panes
 vim.keymap.set('n', '<leader>o', ':TMUXonly close<CR>', { silent = true })
 
